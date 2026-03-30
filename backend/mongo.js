@@ -11,7 +11,7 @@ const url = `mongodb+srv://khaushldevls_db_user:${password}@cluster0.rgtomz2.mon
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect(url, {family: 4})
+mongoose.connect(url, { family: 4 })
 
 const noteSchema = new mongoose.Schema({
   content: String,

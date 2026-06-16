@@ -22,6 +22,16 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
+
   const notesToShow = showAll ?  notes : notes.filter((note) => note.important === true)
 
   const addNote = (event) => {
@@ -39,6 +49,13 @@ const App = () => {
         })
   }
 
+  const noteForm = () => (
+    <form onSubmit={addNote}>
+      <input value={newNote} onChange={handleNoteChange}/>
+      <button type="submit">save</button>
+    </form>
+  )
+
   const handleNoteChange = (event) => {
     setNewNote(event.currentTarget.value)
   }
@@ -52,6 +69,7 @@ const App = () => {
         .then(returnedNote => {
           setNotes(notes.map(note => note.id === id ? returnedNote : note))
         })
+        // eslint-disable-next-line no-unused-vars
         .catch(error => {
           setErrorMessage(`The note '${note.content}' was deleted from the server`)
           setTimeout(() => {
@@ -67,6 +85,10 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password })
 
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      )
+      noteService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -105,12 +127,10 @@ const App = () => {
     </form>
   )
 
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange}/>
-      <button type="submit">save</button>
-    </form>
-  )
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedNoteappUser')
+    setUser(null)
+  }
 
   return (
     <div>
@@ -122,6 +142,7 @@ const App = () => {
       {user && (
         <div>
           <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>logout</button>
           {noteForm()}
         </div>
       )}

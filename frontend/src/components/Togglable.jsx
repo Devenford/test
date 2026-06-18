@@ -23,4 +23,4 @@ const Togglable = (props) => {
   )
 }
 
-export default Togglable;
+export default Togglable

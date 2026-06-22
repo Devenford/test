@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const LoginForm = ({ performLogin }) => {
   const [username, setUsername] = useState('')
@@ -10,7 +10,7 @@ const LoginForm = ({ performLogin }) => {
     setUsername('')
     setPassword('')
   }
-  
+
   return (
     <div>
       <h2>Login</h2>
@@ -19,9 +19,9 @@ const LoginForm = ({ performLogin }) => {
         <div>
           <label>
             username
-            <input 
-              type='text' 
-              value={username} 
+            <input
+              type='text'
+              value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
           </label>
@@ -42,4 +42,4 @@ const LoginForm = ({ performLogin }) => {
   )
 }
 
-  export default LoginForm
+export default LoginForm

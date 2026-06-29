@@ -6,9 +6,9 @@ describe('Note app', () => {
     await request.post('/api/testing/reset')
     await request.post('/api/users', {
       data: {
-        "username": "neil123",
-        "name": "Neil Tyson",
-        "password": "password12345"
+        'username': 'neil123',
+        'name': 'Neil Tyson',
+        'password': 'password12345'
       }
     })
 
@@ -24,7 +24,7 @@ describe('Note app', () => {
 
   test('user can log in', async ({ page }) => {
     await loginWith(page, 'neil123', 'password12345')
-    await expect(page.getByText('Neil Tyson logged in'))
+    await expect(page.getByText('Neil Tyson logged in')).toBeVisible()
   })
 
   test('login fails with wrong password', async ({ page }) => {
@@ -35,7 +35,7 @@ describe('Note app', () => {
     await expect(errorDiv).toHaveCSS('border-style', 'solid')
     await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)')
 
-    await expect(page.getByText('Neil Tyson logged in')).not.toBeVisible()
+    await expect(page.getByText('Neil Tyson logged in')).toBeHidden()
   })
 
   describe('when logged in', () => {
@@ -56,10 +56,9 @@ describe('Note app', () => {
       })
 
       test('one of those can be made unimportant', async ({ page }) => {
-        await page.pause()
         const otherNoteText = page.getByText('second note')
         const otherNoteElement = otherNoteText.locator('..')
-        
+
         await otherNoteElement.getByRole('button', { name: 'make unimportant' }).click()
 
         await expect(otherNoteElement.getByText('make important')).toBeVisible()
